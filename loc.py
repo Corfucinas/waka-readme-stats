@@ -54,19 +54,21 @@ class LinesOfCode:
         result = self.run_query_v3(repoDetails['nameWithOwner'])
         this_year = datetime.datetime.utcnow().year
 
-        for i in range(len(result)):
-            curr_year = datetime.datetime.fromtimestamp(result[i][0]).year
-            # if  curr_year != this_year:
-            quarter = self.getQuarter(result[i][0])
+        for item in result:
             if repoDetails['primaryLanguage'] is not None:
 
+                curr_year = datetime.datetime.fromtimestamp(item[0]).year
+                        # if  curr_year != this_year:
+                quarter = self.getQuarter(item[0])
                 if curr_year not in yearly_data:
                     yearly_data[curr_year] = {}
                 if quarter not in yearly_data[curr_year]:
                     yearly_data[curr_year][quarter] = {}
                 if repoDetails['primaryLanguage']['name'] not in yearly_data[curr_year][quarter]:
                     yearly_data[curr_year][quarter][repoDetails['primaryLanguage']['name']] = 0
-                yearly_data[curr_year][quarter][repoDetails['primaryLanguage']['name']] += (result[i][1] + result[i][2])
+                yearly_data[curr_year][quarter][
+                    repoDetails['primaryLanguage']['name']
+                ] += (item[1] + item[2])
 
                 # to find total
 
